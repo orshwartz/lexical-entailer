@@ -33,7 +33,7 @@ public class ProcessedDevSetParser {
 		new ProcessedSet<ProcessedDevCandidatePhrase>();
 	
 	private static final String DELIMS_TERM_LIST =
-		new String(" ,");
+		new String("`");
 	private static final String DELIMS_TERM_INFO =
 		new String(":");
 	
@@ -67,8 +67,9 @@ public class ProcessedDevSetParser {
 				// Check type of data in current line
 				Matcher matcher =
 					ptrnSentType.matcher(curLine);
-				String lineType = matcher.group(1);
-				String lineData = matcher.group(2);
+				matcher.matches();
+				String lineType = matcher.group(1).trim();
+				String lineData = matcher.group(2).trim();
 				
 				// If line contains topic data
 				if (lineType.equals("Topic")) {
@@ -109,9 +110,10 @@ public class ProcessedDevSetParser {
 	private void handleTopicData(String data) {
 		
 		Matcher matcher = ptrnTopicID.matcher(data);
+		matcher.matches();
 		
 		// Get the topic ID
-		curTopicID = matcher.group(1);
+		curTopicID = matcher.group(1).trim();
 	}
 	
 	/**
@@ -121,10 +123,43 @@ public class ProcessedDevSetParser {
 	private void handleHypothesisData(String data) {
 		
 		Matcher matcher = ptrnHypoIDAndTermList.matcher(data);
-		curHypothesisID = matcher.group(1);
+		matcher.matches();
+		curHypothesisID = matcher.group(1).trim();
 
 		// Get the term list
-		String termList = matcher.group(2);
+		String termList = matcher.group(2).trim().replace(", ", "`");
+		
+		StringTokenizer termListTokenizer =
+			new StringTokenizer(termList, DELIMS_TERM_LIST);
+		
+		// Get terms in list
+		while (termListTokenizer.hasMoreTokens()) {
+
+			// Get term
+			String term = termListTokenizer.nextToken();
+			
+			StringTokenizer termInfoTokenizer =
+				new StringTokenizer(term, DELIMS_TERM_INFO);
+			
+			String curPOSTag = termInfoTokenizer.nextToken();
+			String curOriginalTerm = termInfoTokenizer.nextToken();
+			String curTermLemma = termInfoTokenizer.nextToken();
+		}
+	}
+	
+	/**
+	 * Gets sentence document ID, sentence ID, term list and
+	 * entailment flag (1 if entails hypothesis and 0 otherwise)
+	 * @param data Data part of sentence line
+	 */
+	private void handleSentenceData(String data) {
+		
+		Matcher matcher = ptrnSentenceData.matcher(data);
+		matcher.matches();
+		curDocID = matcher.group(1).trim();
+		curSentenceID = Integer.parseInt(matcher.group(2).trim());
+		String termList = matcher.group(3).trim();
+		Boolean isEntailing = matcher.group(4).trim().equals("1");
 		
 		StringTokenizer termListTokenizer =
 			new StringTokenizer(termList, DELIMS_TERM_LIST);
@@ -138,40 +173,9 @@ public class ProcessedDevSetParser {
 			StringTokenizer termInfoTokenizer =
 				new StringTokenizer(term, DELIMS_TERM_INFO);
 			
-			String curPOSTag = termInfoTokenizer.nextToken(term);
-			String curOriginalTerm = termInfoTokenizer.nextToken(term);
-			String curTermLemma = termInfoTokenizer.nextToken(term);
-		}
-	}
-	
-	/**
-	 * Get's sentence document ID, sentence ID, term list and
-	 * entailment flag (1 if entails hypothesis and 0 otherwise)
-	 * @param data Data part of sentence line
-	 */
-	private void handleSentenceData(String data) {
-		
-		Matcher matcher = ptrnSentenceData.matcher(data);
-		curDocID = matcher.group(1);
-		curSentenceID = Integer.parseInt(matcher.group(2));
-		String termList = matcher.group(3);
-		Boolean isEntailing = matcher.group(4).equals("1");
-		
-		StringTokenizer termListTokenizer =
-			new StringTokenizer(termList, DELIMS_TERM_LIST);
-
-		// Get terms in list
-		while (termListTokenizer.hasMoreTokens()) {
-
-			// Get term
-			String term = termListTokenizer.nextToken();
-			
-			StringTokenizer termInfoTokenizer =
-				new StringTokenizer(term, DELIMS_TERM_LIST);
-			
-			String curPOSTag = termInfoTokenizer.nextToken(term);
-			String curOriginalTerm = termInfoTokenizer.nextToken(term);
-			String curTermLemma = termInfoTokenizer.nextToken(term);
+			String curPOSTag = termInfoTokenizer.nextToken();
+			String curOriginalTerm = termInfoTokenizer.nextToken();
+			String curTermLemma = termInfoTokenizer.nextToken();
 		}
 	}
 }
