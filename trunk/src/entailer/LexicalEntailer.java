@@ -24,9 +24,6 @@ import net.sf.extjwnl.dictionary.Dictionary;
  */
 public class LexicalEntailer {
 
-	private final static String PATH_FILE_PROPERTIES =
-		"res/extjwnl/file_properties.xml";
-	
 	private final static String PATH_PROCESSED_DEV_SET =
 		"res/DevSet/Processed_DevSet.txt";
 	
@@ -43,13 +40,13 @@ public class LexicalEntailer {
 		
 			for (POS curPOS : POS.getAllPOS()) {
 				System.out.println(curPOS);
-				IndexWord indexWord = dictionary.getIndexWord(curPOS, "witches");
+				IndexWord indexWord = dictionary.getIndexWord(curPOS, "eat");
 				
 				// If the word is found
 				if (indexWord != null) {
 					List<Synset> senses = indexWord.getSenses();
 					for (Synset synset : senses) {
-						System.out.println(synset.getGloss().toString());
+						//System.out.println(synset.getGloss().toString());
 						List<Word> synsetWords = synset.getWords();
 						for (Word word : synsetWords) {
 							System.out.println("\t" + word.getLemma().toString());
