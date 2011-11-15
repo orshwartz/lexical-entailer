@@ -27,6 +27,9 @@ public class LexicalEntailer {
 	private final static String PATH_PROCESSED_DEV_SET =
 		"res/DevSet/Processed_DevSet.txt";
 	
+	private final static String PATH_FILE_PROPERTIES =
+		"res/extjwnl/file_properties.xml";
+	
 	/**
 	 * @param args
 	 */
@@ -40,7 +43,7 @@ public class LexicalEntailer {
 		
 			for (POS curPOS : POS.getAllPOS()) {
 				System.out.println(curPOS);
-				IndexWord indexWord = dictionary.getIndexWord(curPOS, "eat");
+				IndexWord indexWord = dictionary.getIndexWord(curPOS, "eating");
 				
 				// If the word is found
 				if (indexWord != null) {
