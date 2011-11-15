@@ -16,7 +16,7 @@ public class DevSet {
 	 * @param termList
 	 */
 	public void addHypothesis(Integer hypothesisID, ArrayList<ProcessedTerm> termList) {
-System.out.println("added: " + hypothesisID + "\t" + termList);
+//System.out.println("added: " + hypothesisID + "\t" + termList);
 		hypotheses.put(hypothesisID, termList);
 	}
 	
@@ -35,7 +35,7 @@ System.out.println("added: " + hypothesisID + "\t" + termList);
 								   int sentIdx,
 								   ArrayList<ProcessedTerm> sentTermList,
 								   boolean isEntailing) {
-System.out.println("added: " + topicID + "\t" + hypothesisID + "\t" + docID + "\t" + sentIdx + "\t" + sentTermList + "\t" + isEntailing);
+//System.out.println("added: " + topicID + "\t" + hypothesisID + "\t" + docID + "\t" + sentIdx + "\t" + sentTermList + "\t" + isEntailing);
 		candidatePhrases.add(new DevSetRecord(topicID,
 											  hypothesisID,
 											  docID,
