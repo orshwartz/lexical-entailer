@@ -33,7 +33,6 @@ public class LexicalEntailer {
 											   processedCandPhraseTerm.getPosTag(),
 											   processedCandPhraseTerm.getLemma())) {
 					
-System.out.println(processedHypoTerm.getLemma() + "-->" + processedCandPhraseTerm.getLemma());
 					return true;
 				}
 			}

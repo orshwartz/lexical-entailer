@@ -24,7 +24,7 @@ public class Main {
 			// Get terms of hypothesis
 			ArrayList<ProcessedTerm> hypothesisTermList =
 				devHypotheses.get(devSetRecord.getHypothesisID());
-			
+
 			// Check if there's an entailment
 			boolean myResult =
 				LexicalEntailer.isEntailing(hypothesisTermList,
