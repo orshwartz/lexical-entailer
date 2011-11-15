@@ -4,19 +4,13 @@
 package textentailer;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import entailer.TopicHypothesesSet;
 
 import net.sf.extjwnl.data.POS;
 
@@ -29,7 +23,6 @@ public class ProcessedSetParser {
 	private static Integer curHypothesisID;
 	private static String curDocID;
 	private static int curSentenceID;
-	private String termList;
 	private static ArrayList<ProcessedTerm> curTermList =
 			new ArrayList<ProcessedTerm>();
 	private static boolean curEntailFlag;
@@ -197,7 +190,7 @@ public class ProcessedSetParser {
 		matcher.matches();
 		
 		// Get the topic ID
-		curTopicID = matcher.group(1).trim();
+		curTopicID = new String(matcher.group(1).trim());
 	}
 	
 	/**
@@ -208,7 +201,7 @@ public class ProcessedSetParser {
 		
 		Matcher matcher = ptrnHypoIDAndTermList.matcher(data);
 		matcher.matches();
-		curHypothesisID = Integer.parseInt(matcher.group(1).trim());
+		curHypothesisID = new Integer(Integer.parseInt(matcher.group(1).trim()));
 
 		// Get the term list
 		String termList = matcher.group(2).trim().replace(", ", "`");
@@ -225,8 +218,8 @@ public class ProcessedSetParser {
 		
 		Matcher matcher = ptrnDevSentenceData.matcher(data);
 		matcher.matches();
-		curDocID = matcher.group(1).trim();
-		curSentenceID = Integer.parseInt(matcher.group(2).trim());
+		curDocID = new String(matcher.group(1).trim());
+		curSentenceID = new Integer(Integer.parseInt(matcher.group(2).trim()));
 
 		// Get the term list
 		String termList = matcher.group(3).trim().replace(", ", "`");
@@ -244,8 +237,8 @@ public class ProcessedSetParser {
 		
 		Matcher matcher = ptrnTestSentenceData.matcher(data);
 		matcher.matches();
-		curDocID = matcher.group(1).trim();
-		curSentenceID = Integer.parseInt(matcher.group(2).trim());
+		curDocID = new String(matcher.group(1).trim());
+		curSentenceID = new Integer(Integer.parseInt(matcher.group(2).trim()));
 
 		// Get the term list
 		String termList = matcher.group(3).trim().replace(", ", "`");
@@ -258,8 +251,9 @@ public class ProcessedSetParser {
 		StringTokenizer termListTokenizer =
 			new StringTokenizer(termList, DELIMS_TERM_LIST);
 
-		// Remove previous terms from previous phrase
-		curTermList.clear();
+		// Remove previous terms from previous phrase (we need a new ArrayList because we saved
+		// the reference to the older one in our DB)
+		curTermList = new ArrayList<ProcessedTerm>();
 		
 		// Get terms in list
 		while (termListTokenizer.hasMoreTokens()) {
