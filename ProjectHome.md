@@ -1,0 +1,1 @@
+Project for course 89-565 (Text Understanding) at BIU university.
